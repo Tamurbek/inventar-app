@@ -1,0 +1,54 @@
+services:
+  ubuntu:
+    image: ubuntu:latest
+    container_name: ubuntu_service
+    command: sleep infinity  # Konteyner doimiy ishlashi uchun
+  app:
+    #restart: always
+    build: ./docker/app
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www/
+    networks:
+      - test-app
+  #cron:
+    #restart: always
+    #build: ./docker/cron
+    #working_dir: /var/wwwcom
+    #volumes:
+    #  - .:/var/www/
+    #networks:
+    #  - test-app
+  web:
+    #restart: always
+    image: nginx:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/log:/var/log/nginx
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - test-app
+  db:
+    #restart: always
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_DATABASE=product-app
+      - MYSQL_ROOT_PASSWORD=dev
+    volumes:
+      - dbtest-app:/var/lib/mysql
+    networks:
+      - test-app
+    ports:
+      - "3311:3306"
+
+#Docker Networks
+networks:
+  test-app:
+    driver: bridge
+
+volumes:
+    dbtest-app:

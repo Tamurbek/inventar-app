@@ -1,8 +1,4 @@
 services:
-  ubuntu:
-    image: ubuntu:latest
-    container_name: ubuntu_service
-    command: sleep infinity  # Konteyner doimiy ishlashi uchun
   app:
     #restart: always
     build: ./docker/app

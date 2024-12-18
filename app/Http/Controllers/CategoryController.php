@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
     public function getAll()
     {
-        $category = Category::all();
+        $userId = Auth::id();
+        $category = Category::where("users_id", $userId)->get();
         return view('categories', ['categories' => $category]);
     }    
 
@@ -40,7 +42,10 @@ class CategoryController extends Controller
                 $category->image = $path . $filename;
             }
     
+            $userId=Auth::user()->id;
+
             $category->name = $request->name;
+            $category->users_id= $userId;
             $category->save();
     
             return redirect()->route('category.getAll');
@@ -56,7 +61,7 @@ class CategoryController extends Controller
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $extension;
-                $path = 'uploads/Category/';
+                $path = 'uploads/category/';
                 $file->move(public_path($path), $filename);
                 $category->image = $path . $filename;
             }
@@ -94,8 +99,6 @@ class CategoryController extends Controller
 
             $Category->update([
                 'name'=> $request->name,
-                'username'=> $request->username,
-                'password'=> $request->password,
             ]);
             return redirect()->route('category.getAll');
         }catch(Exception $e){

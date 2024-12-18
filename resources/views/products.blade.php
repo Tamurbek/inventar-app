@@ -1,12 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-4xl mx-auto mt-10 bg-white p-6 rounded-md shadow-md">
-    <div class="mb-4 d-flex">
-        <h2 class="text-2xl font-bold text-center mb-5">Online ro`yxat</h2>
-        <button onclick="openCreateModal()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
-            + Yangi
-        </button>
+<div class="w-full max-w-[768px] min-w-[320px] bg-white p-6 rounded-md shadow-md">
+    <div class="mb-4 d-flex justify-between">
+        <h2 class="text-2xl font-bold text-center mb-5">Gullar</h2>
+        <div class="flex flex-row items-center justify-between">
+            <a href="{{route('category.getAll')}}" class="bg-cyan-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+                Kategoriyalar
+            </a>
+            <button onclick="openCreateModal()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+                + Yangi
+            </button>
+        </div>
     </div>
 
     @if (session('success'))
@@ -16,7 +21,7 @@
     @endif
 
     <div id="createModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
-        <div class="relative bg-white p-6 rounded-lg shadow-lg w-1/3">
+        <div class="min-w-[320px] relative bg-white p-6 rounded-lg shadow-lg">
             <h2 class="text-xl font-semibold mb-4">Yangi qo`shish</h2>
             <button id="closeCreateModal" class="absolute top-6 right-6 text-gray-600 hover:text-gray-800 text-2xl">X</button>
             <form id="createForm" action="/prod-create" method="POST" enctype="multipart/form-data">
@@ -28,7 +33,7 @@
 
                 <div class="mb-4">
                     <label for="createPrice" class="block text-sm font-medium text-gray-700">Narxi</label>
-                    <input type="number" name="price" id="createprice" class="w-full border border-gray-300 rounded-md p-2">
+                    <input type="number" name="price" value="0" id="createprice" class="w-full border border-gray-300 rounded-md p-2">
                 </div>
                 <div class="mb-4">
                     <label for="price_visible" class="inline-flex items-center cursor-pointer">
@@ -38,8 +43,15 @@
                     </label>
                 </div>
                 <div class="mb-4">
-                    <label for="category_id" class="block text-sm font-medium text-gray-700">Kategoriyasi</label>
-                    <input type="number" name="category_id" id="category_id" value="0" class="w-full border border-gray-300 rounded-md p-2" required>
+                    <label for="category_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategoriya</label>
+                    <select id="category_id" name="categories_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected>Kategoriyani tanlang</option>
+                        @forelse ($categories as $category)
+                            <option value="{{$category->id}}">{{$category->name}}</option>
+                        @empty
+                            <option value="">Kategoriya yo`q</option>
+                        @endforelse
+                    </select>
                 </div>
 
                 <div class="mb-4">
@@ -56,8 +68,8 @@
     </div>
 
 
-    <div id="editModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
-        <div class="relative bg-white p-6 rounded-lg shadow-lg w-1/3">
+    <div id="editModal" class="min-w-md fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="min-w-md relative bg-white p-6 rounded-lg shadow-lg">
             <h2 class="text-xl font-semibold mb-4">Tahrirlash</h2>
             <button id="closeModal" class="absolute top-6 right-6 text-gray-600 hover:text-gray-800 text-2xl">X</button>
             <form id="editForm" action="" method="POST"  enctype="multipart/form-data">
@@ -74,15 +86,22 @@
                     <input type="text" name="price" id="price" class="w-full border border-gray-300 rounded-md p-2">
                 </div>
                 <div class="mb-4">
-                    <label for="editPeopleId" class="block text-sm font-medium text-gray-700">Kategoriyasi</label>
-                    <input type="number" name="people_id" id="editPeopleId" value="0" class="w-full border border-gray-300 rounded-md p-2" required>
+                    <label for="editPeopleId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategoriya</label>
+                    <select id="editPeopleId" name="categories_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected>Kategoriyani tanlang</option>
+                        @forelse ($categories as $category)
+                            <option value="{{$category->id}}">{{$category->name}}</option>
+                        @empty
+                            <option value="">Kategoriya yo`q</option>
+                        @endforelse
+                    </select>
                 </div>
 
                 <div class="mb-4">
                     <label for="edit_price_visible" class="inline-flex items-center cursor-pointer">
                         <input type="checkbox" value="" name="price_visible" id="edit_price_visible" class="sr-only peer">
                         <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Narxi korinmasin</span>
+                        <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300">Narxi ko`rinmasin</span>
                     </label>
                 </div>
 
@@ -99,50 +118,49 @@
         </div>
     </div>
 
-
-    <table class="min-w-full border-collapse border border-gray-200">
-        <thead>
-            <tr class="bg-gray-100">
-                <th class="border border-gray-300 px-4 py-2">ID</th>
-                <th class="border border-gray-300 px-4 py-2">Rasm</th>
-                <th class="border border-gray-300 px-4 py-2">Nomi</th>
-                <th class="border border-gray-300 px-4 py-2">Narxi</th>
-                <th class="border border-gray-300 px-4 py-2">Tahrir</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($product as $prod)
-                <tr>
-                    <td class="border border-gray-300 px-4 py-2">{{ $prod->id }}</td>
-                    <td class="border border-gray-300 px-4 py-2">
+    <div class="grid gap-8
+                sm:grid-cols-1
+                md:grid-cols-2
+                lg:grid-cols-3">
+        @forelse ($product as $prod)
+            <div class="max-w-md h-[300px] mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+                <div class="flex flex-col gap-4 md:flex">
+                    <div class="md:shrink-0">
                         @if($prod->image)
-                            <img src="{{ asset($prod->image) }}" alt="Image" style="width: 100px; height: auto;">
+                            <img class="h-[12rem] w-48 object-cover md:h-30 md:w-48" src="{{ asset($prod->image) }}" alt="Modern building architecture">
                         @endif
-                    </td>
-                    <td class="border border-gray-300 px-4 py-2">{{ $prod->name }}</td>
-                    <td class="border border-gray-300 px-4 py-2">{{ $prod->price }}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-center">
-                        <button onclick="openModal(
-                                                     {{ $prod->id }}, 
-                                                    '{{ $prod->name }}', 
-                                                    '{{ $prod->price }}',
-                                                    '{{ $prod->price_visible }}',
-                                                    '{{ $prod->category_id }}',
-                                                    '{{ $prod->image }}')" class="text-blue-500 hover:underline">Tahrir</button> |
-                        <form action="{{ route('product.delete', $prod->id) }}" method="POST" class="inline-block">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('Are you sure you want to delete this prod?')">O`chirish</button>
-                        </form>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4" class="text-center text-gray-500 py-4">Ro`yxat bo`sh</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+                    </div>
+                    <div class="flex flex-col gap-[1.5rem] flex-wrap items-center justify-between">
+                        <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{{ $prod->name }}</div>
+                        <div class="w-full flex flex-row items-center justify-around">
+                            <button onclick="openModal(
+                                                         {{ $prod->id }}, 
+                                                        '{{ $prod->name }}', 
+                                                        '{{ $prod->price }}',
+                                                        '{{ $prod->price_visible }}',
+                                                        '{{ $prod->category_id }}',
+                                                        '{{ $prod->image }}')" class="text-blue-500 hover:underline">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="20" viewBox="0 0 17 20" fill="none">
+                                                            <path d="M5.75234 19H16M8.78441 3.31171C8.78441 3.31171 8.78441 4.94634 10.419 6.58096C12.0537 8.21559 13.6883 8.21559 13.6883 8.21559M2.31963 15.9881L5.75234 15.4977C6.2475 15.4269 6.70636 15.1975 7.06004 14.8438L15.3229 6.58096C16.2257 5.67818 16.2257 4.21449 15.3229 3.31171L13.6883 1.67708C12.7855 0.774305 11.3218 0.774305 10.419 1.67708L2.15616 9.93996C1.80248 10.2936 1.57305 10.7525 1.50231 11.2477L1.01193 14.6804C0.902951 15.4432 1.5568 16.097 2.31963 15.9881Z" stroke="#28303F" stroke-width="1.5" stroke-linecap="round"/>
+                                                        </svg>
+                                                        </button>
+                            <form action="{{ route('product.delete', $prod->id) }}" method="POST" class="inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:underline" onclick="return confirm('Are you sure you want to delete this prod?')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="22" viewBox="0 0 20 22" fill="none">
+                                        <path d="M3 7V17C3 19.2091 4.79086 21 7 21H13C15.2091 21 17 19.2091 17 17V7M12 10V16M8 10L8 16M14 4L12.5937 1.8906C12.2228 1.3342 11.5983 1 10.9296 1H9.07037C8.40166 1 7.7772 1.3342 7.40627 1.8906L6 4M14 4H6M14 4H19M6 4H1" stroke="#28303F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="text-center text-gray-500 py-4">Ro`yxat bo`sh</div>
+        @endforelse
+    </div>
 
     <script>
         document.getElementById('createImage').addEventListener('change', function(event) {

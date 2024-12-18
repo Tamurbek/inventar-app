@@ -3,15 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $product = Product::all();
-        return view('products', ['product' => $product]);
+        $product = Product::where('categories_id', $request->categories_id)->get();
+        $categories = Category::all();
+        return view('products', [
+            'product' => $product,
+            'categories'=>$categories
+        ]);
     }    
 
     public function All()
@@ -43,10 +48,10 @@ class ProductController extends Controller
             $product->name = $request->name;
             $product->price = $request->price;
             $product->price_visible = ($request->price_visible=== 'on') ? true : false;
-            $product->category_id = $request->category_id;
+            $product->categories_id = $request->categories_id;
             $product->save();
     
-            return redirect()->route('product.getAll');
+            return redirect()->route('product.getAll',$request->categories_id);
         // }catch (Exception $e){
         //     return redirect()->route('product.getAll');
         // }
@@ -59,7 +64,7 @@ class ProductController extends Controller
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $extension;
-                $path = 'uploads/Product/';
+                $path = 'uploads/product/';
                 $file->move(public_path($path), $filename);
                 $product->image = $path . $filename;
             }
@@ -71,13 +76,15 @@ class ProductController extends Controller
     
             return response()->json($product);
         }catch (Exception $e){
-            return redirect()->route('product.getAll');
+            return redirect()->route('product.getAll',$request->categories_id);
         }
     }
 
     public function update(Request $request, $id){
-        try{
+        // try{
             $product= Product::find($id);
+            $catedories_id = $product->catedories_id;
+            // dd($product->categories_id);
             if(!$product){
                 response()->json(['message'=> 'Product not found'] ,404);
             }
@@ -87,7 +94,7 @@ class ProductController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $extension;
                 // dd($filename);
-                $path = 'uploads/Product/';
+                $path = 'uploads/product/';
                 $file->move($path, $filename);
         
                 if ($product->image && file_exists($product->image)) {
@@ -100,12 +107,12 @@ class ProductController extends Controller
             $product->update([
                 'name'=> $request->name,
                 'price'=> $request->price,
-                'people_id'=> $request->people_id,
+                'categories_id'=> $request->categories_id,
             ]);
-            return redirect()->route('product.getAll');
-        }catch(Exception $e){
-            return redirect()->route('product.getAll');
-        }
+            return redirect()->route('product.getAll', $catedories_id);
+        // }catch(Exception $e){
+        //     return redirect()->route('product.getAll');
+        // }
     }
 
     public function delete($id){

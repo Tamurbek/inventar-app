@@ -13,9 +13,11 @@ class ProductController extends Controller
     {
         $product = Product::where('categories_id', $request->categories_id)->get();
         $categories = Category::all();
+        $categories_name = Category::find($request->categories_id);
         return view('products', [
             'product' => $product,
-            'categories'=>$categories
+            'categories'=>$categories,
+            'categories_name'=>$categories_name,
         ]);
     }    
 
@@ -83,7 +85,8 @@ class ProductController extends Controller
     public function update(Request $request, $id){
         // try{
             $product= Product::find($id);
-            $catedories_id = $product->catedories_id;
+            $catedories_id = $product->categories_id;
+            // dd($catedories_id);
             // dd($product->categories_id);
             if(!$product){
                 response()->json(['message'=> 'Product not found'] ,404);
@@ -103,12 +106,10 @@ class ProductController extends Controller
         
                 $product->image = $path . $filename;
             }
-
-            $product->update([
-                'name'=> $request->name,
-                'price'=> $request->price,
-                'categories_id'=> $request->categories_id,
-            ]);
+            $product->name = $request->name;
+            $product->price = $request->price;
+            $product->categories_id = $request->categories_id;
+            $product->save();
             return redirect()->route('product.getAll', $catedories_id);
         // }catch(Exception $e){
         //     return redirect()->route('product.getAll');

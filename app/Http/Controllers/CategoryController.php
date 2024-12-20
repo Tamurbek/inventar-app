@@ -97,9 +97,9 @@ class CategoryController extends Controller
                 $Category->image = $path . $filename;
             }
 
-            $Category->update([
-                'name'=> $request->name,
-            ]);
+            $Category->name = $request->name;
+            $Category->save();
+            
             return redirect()->route('category.getAll');
         }catch(Exception $e){
             return redirect()->route('category.getAll');

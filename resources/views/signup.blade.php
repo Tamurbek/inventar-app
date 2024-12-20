@@ -2,35 +2,35 @@
 
 @section('content')
 
-<div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Ro`yxatdan o`tish</h2>
+<div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h2 class="text-3xl font-bold text-center text-white mb-6">Ro`yxatdan o`tish</h2>
     <form method="POST" action="{{ route('signup.submit') }}">
         @csrf
 
         <!-- Full Name -->
         <div class="mb-4">
-            <label for="name" class="block text-gray-700 mb-2">Ism</label>
+            <label for="name" class="block text-white mb-2">Ism</label>
             <input type="text" id="name" name="name" placeholder="Ismingizni kiriting"
                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <!-- login -->
         <div class="mb-4">
-            <label for="email" class="block text-gray-700 mb-2">Email</label>
+            <label for="email" class="block text-white mb-2">Email</label>
             <input type="email" id="email" name="email" placeholder="Email kiriting"
                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <!-- Password -->
         <div class="mb-4">
-            <label for="password" class="block text-gray-700 mb-2">Parol</label>
+            <label for="password" class="block text-white mb-2">Parol</label>
             <input type="password" id="password" name="password" placeholder="Parol kiriting"
                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <!-- Confirm Password -->
         <div class="mb-4">
-            <label for="password_confirmation" class="block text-gray-700 mb-2">Parolni tasdiqlash</label>
+            <label for="password_confirmation" class="block text-white mb-2">Parolni tasdiqlash</label>
             <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Tasdiqlash uchun parolni kiriting"
                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>

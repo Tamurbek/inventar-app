@@ -2,20 +2,20 @@
 
 @section('content')
 
-<div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Kirish</h2>
+<div class="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h2 class="text-3xl font-bold text-center text-white mb-6">Kirish</h2>
     <form method="POST" action="{{ route('signin.submit') }}">
         @csrf
         <!-- Email Input -->
         <div class="mb-4">
-            <label for="email" class="block text-gray-700 mb-2">Email</label>
+            <label for="email" class="block text-white mb-2">Email</label>
             <input type="text" id="email" name="email" placeholder="Email kiriting"
                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
 
         <!-- Password Input -->
         <div class="mb-4">
-            <label for="password" class="block text-gray-700 mb-2">Parol</label>
+            <label for="password" class="block text-white mb-2">Parol</label>
             <input type="password" id="password" name="password" placeholder="Parol kiriting"
                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>

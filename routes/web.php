@@ -3,7 +3,11 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use Endroid\QrCode\Builder\Builder;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+use Picqer\Barcode\BarcodeGeneratorPNG;
+
 
 // login
 Route::get('/signin', function () {
@@ -21,6 +25,34 @@ Route::post('/register', [AuthController::class,'signup'])->name('signup.submit'
 
 
 Route::middleware('auth')->group(function () {
+    Route::get('/qr-code', function () {
+        $result = Builder::create()
+            ->data('Hello World')
+            ->build();
+    
+        $path = Storage::disk('public')->path('qrcode.png');
+        file_put_contents($path, $result->getString());
+    
+        return response()->download($path);
+    });
+    
+    Route::get('/qr-code-view', function () {
+        $result = Builder::create()
+            ->data('Hello World')
+            ->build();
+    
+        // QR kodni baza64 formatida olish
+        $base64 = base64_encode($result->getString());
+
+        // $generator = new BarcodeGeneratorPNG();
+        // $barcodeData = '123456789012'; // EAN13 uchun 12 ta raqam bo‘lishi kerak
+
+        // // PNG formatida shtrix kodni yaratish
+        // $barcode = $generator->getBarcode($barcodeData, $generator::TYPE_EAN_13);
+
+    
+        return view('qr-code', ['qrcode' => $base64]);
+    })->name('view-qr-code');
     // logOut
     Route::get('/logOut', [AuthController::class,'logout'])->name('logout');
 

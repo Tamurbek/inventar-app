@@ -3,8 +3,8 @@
 @section('content')
 <div class="w-full max-w-[768px] min-w-[320px] bg-white p-6 rounded-md shadow-md">
     <div class="mb-4 d-flex justify-between">
-        <h2 class="text-2xl font-bold text-center mb-5">Kategoriyalar</h2>
-       <div class="flex flex-row items-center justify-center">
+       <div class="flex flex-row items-center justify-between gap-5">
+            <h2 class="text-2xl font-bold text-center">Kategoriyalar</h2>
             <button onclick="openCreateModal()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
                 + Yangi
             </button>
@@ -97,7 +97,7 @@
                             </form>
                         </div>
                         <a href="{{route('product.getAll',$category->id)}}" class="bg-cyan-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
-                            Ko`rish
+                            Kirish
                         </a>
                     </div>
                 </div>

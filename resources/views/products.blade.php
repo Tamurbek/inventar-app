@@ -2,12 +2,22 @@
 
 @section('content')
 <div class="w-full max-w-[768px] min-w-[320px] bg-white p-6 rounded-md shadow-md">
-    <div class="mb-4 d-flex justify-between">
-        <h2 class="text-2xl font-bold text-center mb-5">Gullar</h2>
-        <div class="flex flex-row items-center justify-between">
-            <a href="{{route('category.getAll')}}" class="bg-cyan-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
-                Kategoriyalar
-            </a>
+    <div class="mb-4 flex flex-row items-center justify-between">
+        <a href="{{route('category.getAll')}}" class="">
+            <svg xmlns="http://www.w3.org/2000/svg" 
+                 shape-rendering="geometricPrecision" 
+                 text-rendering="geometricPrecision" 
+                 image-rendering="optimizeQuality" 
+                 fill-rule="evenodd" 
+                 clip-rule="evenodd" 
+                 width="30"
+                 viewBox="0 0 512 376.83">
+                <path fill-rule="nonzero"
+                d="M156.88 372.7a12.026 12.026 0 0 0 17.09 1.06c5-4.47 5.46-12.2 1.04-17.25L38.96 200.69h460.89c6.71 0 12.15-5.5 12.15-12.28 0-6.77-5.44-12.27-12.15-12.27H38.95L175.01 20.32c4.42-5.05 3.96-12.78-1.04-17.25-5.01-4.47-12.66-4-17.09 1.05l-153.67 176c-4.17 4.55-4.32 11.64-.17 16.39L156.88 372.7z"/>
+            </svg>
+        </a>
+        <h2 class="text-2xl font-bold text-center">{{$categories_name->name}}</h2>
+        <div class="flex flex-row items-center justify-end">
             <button onclick="openCreateModal()" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
                 + Yangi
             </button>
@@ -45,7 +55,7 @@
                 <div class="mb-4">
                     <label for="category_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategoriya</label>
                     <select id="category_id" name="categories_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected>Kategoriyani tanlang</option>
+                        <option>Kategoriyani tanlang</option>
                         @forelse ($categories as $category)
                             <option value="{{$category->id}}">{{$category->name}}</option>
                         @empty
@@ -88,9 +98,10 @@
                 <div class="mb-4">
                     <label for="editPeopleId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kategoriya</label>
                     <select id="editPeopleId" name="categories_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected>Kategoriyani tanlang</option>
+                        <option>Kategoriyani tanlang</option>
                         @forelse ($categories as $category)
-                            <option value="{{$category->id}}">{{$category->name}}</option>
+                            <option value="{{$category->id}}"
+                                {{$category->id==$categories_name->id ? 'selected' : ''}}>{{$category->name}}</option>
                         @empty
                             <option value="">Kategoriya yo`q</option>
                         @endforelse
@@ -121,13 +132,13 @@
     <div class="grid gap-8
                 sm:grid-cols-1
                 md:grid-cols-2
-                lg:grid-cols-3">
+                lg:grid-cols-2">
         @forelse ($product as $prod)
-            <div class="max-w-md h-[300px] mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+            <div class="min-w-full max-w-full h-[350px] mx-auto bg-white rounded-xl shadow-md overflow-hidden">
                 <div class="flex flex-col gap-4 md:flex">
                     <div class="md:shrink-0">
                         @if($prod->image)
-                            <img class="h-[12rem] w-48 object-cover md:h-30 md:w-48" src="{{ asset($prod->image) }}" alt="Modern building architecture">
+                            <img class="h-[15rem] w-full object-cover md:h-30" src="{{ asset($prod->image) }}" alt="Modern building architecture">
                         @endif
                     </div>
                     <div class="flex flex-col gap-[1.5rem] flex-wrap items-center justify-between">
@@ -222,7 +233,7 @@
             document.getElementById('name').value = name;
             document.getElementById('price').value = price;
             document.getElementById('edit_price_visible').checked =true ? price_visible==1:false ;
-            document.getElementById('editPeopleId').value = people_id;
+            // document.getElementById('editPeopleId').value = people_id;
             document.getElementById('editImageView').src = `${path}/${image}`;
             console.log(image);   
         }
